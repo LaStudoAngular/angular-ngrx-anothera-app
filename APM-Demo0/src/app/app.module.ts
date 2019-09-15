@@ -17,6 +17,8 @@ import { PageNotFoundComponent } from './home/page-not-found.component';
 /* Feature Modules */
 import { UserModule } from './user/user.module';
 import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
 @NgModule({
   imports: [
@@ -26,6 +28,11 @@ import { StoreModule } from '@ngrx/store';
     UserModule,
     AppRoutingModule,
     StoreModule.forRoot({}),
+    StoreDevtoolsModule.instrument({
+      name: 'First NgRx App',
+      maxAge: 20,
+      logOnly: environment.production,
+    }),
   ],
   declarations: [
     AppComponent,
