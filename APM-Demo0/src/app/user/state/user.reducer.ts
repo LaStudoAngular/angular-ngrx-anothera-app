@@ -1,9 +1,16 @@
-export function reducer(state, action) {
+import { User } from '../user';
+
+export interface UsersState {
+  maskUserName: boolean;
+  currentUser: User;
+}
+
+export function reducer(state: UsersState, action) {
   switch (action.type) {
     case 'MASK_USER_NAME':
       return {
         ...state,
-        maskUserName: action.type,
+        maskUserName: action.payload,
       };
     default:
       return state;

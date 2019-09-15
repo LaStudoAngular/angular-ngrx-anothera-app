@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
 
   // TODO: unsubscribe
   ngOnInit(): void {
-    this.store.pipe(select('user')).subscribe(user => {
+    this.store.pipe(select('users')).subscribe(user => {
       if (user) {
         this.maskUserName = user.maskUserName;
       }

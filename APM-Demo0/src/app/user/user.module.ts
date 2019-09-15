@@ -13,7 +13,7 @@ const userRoutes: Routes = [{ path: 'login', component: LoginComponent }];
   imports: [
     SharedModule,
     RouterModule.forChild(userRoutes),
-    StoreModule.forFeature('user', reducer),
+    StoreModule.forFeature('users', reducer),
   ],
   declarations: [LoginComponent],
 })
