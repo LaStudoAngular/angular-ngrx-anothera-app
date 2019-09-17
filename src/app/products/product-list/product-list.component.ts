@@ -1,12 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { Subscription } from 'rxjs';
-
 import { Product } from '../product';
 import { ProductService } from '../product.service';
 import { select, Store } from '@ngrx/store';
 import * as productReducer from '../state/product.reducer';
-import { ToggleProductCode } from '../state/product.actions';
+import {
+  InitializeCurrentProduct,
+  SetCurrentProduct,
+  ToggleProductCode,
+} from '../state/product.actions';
+import { getCurrentProduct } from '../state/product.reducer';
 
 @Component({
   selector: 'pm-product-list',
@@ -16,21 +19,17 @@ import { ToggleProductCode } from '../state/product.actions';
 export class ProductListComponent implements OnInit, OnDestroy {
   pageTitle = 'Products';
   errorMessage: string;
-
   displayCode: boolean;
-
   products: Product[];
-
-  // Used to highlight the selected product in the list
   selectedProduct: Product | null;
-  sub: Subscription;
 
   constructor(private productService: ProductService, private store: Store<productReducer.State>) {}
 
   ngOnInit(): void {
-    this.sub = this.productService.selectedProductChanges$.subscribe(
-      selectedProduct => (this.selectedProduct = selectedProduct),
-    );
+    // TODO: unsubscribe
+    this.store
+      .pipe(select(getCurrentProduct))
+      .subscribe((product: Product) => (this.selectedProduct = product));
 
     this.productService.getProducts().subscribe({
       next: (products: Product[]) => (this.products = products),
@@ -43,19 +42,17 @@ export class ProductListComponent implements OnInit, OnDestroy {
       .subscribe((showProductCode: boolean) => (this.displayCode = showProductCode));
   }
 
-  ngOnDestroy(): void {
-    this.sub.unsubscribe();
-  }
+  ngOnDestroy(): void {}
 
   checkChanged(value: boolean): void {
     this.store.dispatch(new ToggleProductCode(value));
   }
 
   newProduct(): void {
-    this.productService.changeSelectedProduct(this.productService.newProduct());
+    this.store.dispatch(new InitializeCurrentProduct());
   }
 
   productSelected(product: Product): void {
-    this.productService.changeSelectedProduct(product);
+    this.store.dispatch(new SetCurrentProduct(product));
   }
 }

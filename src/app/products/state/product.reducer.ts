@@ -38,7 +38,6 @@ export const getProducts = createSelector(
 );
 
 // REDUCER
-
 export function reducer(
   state: ProductsState = initialState,
   action: ProductActions,
