@@ -5,7 +5,7 @@ export interface UsersState {
   currentUser: User;
 }
 
-export function reducer(state: UsersState, action) {
+export function reducer(state: UsersState, action): UsersState {
   switch (action.type) {
     case 'MASK_USER_NAME':
       return {
